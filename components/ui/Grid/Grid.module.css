@@ -1,0 +1,40 @@
+/* Oder Du machst statt dem @screen Nesting: lg:grid-cols-3 lg:grid-rows-2 */
+/* Dafür muss eben die postcss.config wie unter https://tailwindcss.com/docs/using-with-preprocessors#nesting angepasst werden */
+/* Tailwind doesn't understand nested CSS, so if you want to nest you should make sure your CSS gets un-nested before Tailwind sees it. */
+
+.root {
+  @apply grid gap-0 grid-cols-1;
+
+  @screen lg {
+    @apply grid-cols-3 grid-rows-2;
+  }
+
+  & > * {
+    @apply row-span-1 overflow-hidden;
+    height: 500px;
+    max-height: 800px;
+
+    @screen lg {
+      height: inherit;
+    }
+  }
+}
+
+.layoutA {
+  /* 1, 7, 13 */
+  /* 5, 11, 17 */
+  & > *:nth-child(6n + 1),
+  & > *:nth-child(6n + 5) {
+    @screen lg {
+      @apply col-span-2 row-span-2;
+    }
+  }
+}
+.layoutB {
+  & > *:nth-child(6n + 2),
+  & > *:nth-child(6n + 4) {
+    @screen lg {
+      @apply col-span-2 row-span-2;
+    }
+  }
+}
