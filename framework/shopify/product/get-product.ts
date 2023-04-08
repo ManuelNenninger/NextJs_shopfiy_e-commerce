@@ -22,7 +22,6 @@ const getProduct = async (options: {
     variables,
   });
 
-  //   console.log(JSON.stringify(data.productByHandle, null, 2));
   const { productByHandle } = data;
 
   return {

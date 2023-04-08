@@ -4,6 +4,7 @@ const productConnection = `
      hasPreviousPage
    }
    edges {
+    cursor,
      node {
        id
        title
@@ -35,8 +36,8 @@ const productConnection = `
  `;
 
 const getAllProductsQuery = `
-   query getAllProducts($first: Int = 250) {
-     products(first: $first) {
+   query getAllProducts($first: Int = 250, $after: String ) {
+     products(first: $first, after: $after) {
        ${productConnection}
      }
    }

@@ -4,6 +4,9 @@ import { MutationHook } from "@common/types/hooks";
 import useSWR from "swr";
 import { ApiFetcher } from "@common/types/api";
 import { HookDescriptor } from "@common/types/hooks";
+import useSWRInfinite from "swr/infinite";
+import { getAllProducts } from "@framework/product";
+
 {
   /*
 * Das ist das selbe wie: 
@@ -44,8 +47,6 @@ export const useMutationHook = <T extends HookDescriptor>(
 
 const useData = (hook: any, fetcher: ApiFetcher, ctx: any) => {
   const hookFetcher = async (query: string) => {
-    console.log("ich mach einen Fetch!!!");
-
     try {
       return await hook.fetcher({
         fetch: fetcher,
@@ -81,4 +82,15 @@ export const useSWRHook = (hook: any) => {
       return data;
     },
   });
+};
+
+export const useSWRInfinityHook = (fetchFn, queryFn, initialData) => {
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    return queryFn(pageIndex, previousPageData);
+  };
+
+  const response = useSWRInfinite(getKey, fetchFn, {
+    fallbackData: initialData,
+  });
+  return response;
 };

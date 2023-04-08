@@ -29,10 +29,22 @@ export interface ProductVariant {
   listPrice: number;
   options: ProductOption[];
 }
+export interface NavigationInfo {
+  lastProductCursor: string;
+  firstProductCursor: string;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface GetAllProductsReturnType {
+  products: Product[];
+  navigationInfo: NavigationInfo;
+}
 
 export interface Product {
   id: string;
   name: string;
+  cursor: string;
   description: string;
   path: string;
   slug: string;

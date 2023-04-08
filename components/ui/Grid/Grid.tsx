@@ -4,7 +4,7 @@ import cn from "classnames";
 
 interface Props {
   children: ReactNode[] | ReactNode;
-  layout?: "A" | "B";
+  layout?: "A" | "B" | "C";
 }
 
 const Grid: FunctionComponent<Props> = ({ children, layout = "A" }) => {
@@ -12,6 +12,7 @@ const Grid: FunctionComponent<Props> = ({ children, layout = "A" }) => {
   const rootClassNames = cn(s.root, {
     [s.layoutA]: layout === "A",
     [s.layoutB]: layout === "B",
+    [s.layoutC]: layout === "C",
   });
 
   return <div className={rootClassNames}>{children}</div>;

@@ -7,8 +7,9 @@ import {
 } from "../schema";
 import { ImageEdge, ProductOption, ProductVariantConnection } from "../schema";
 
-import { Product } from "@common/types/product";
+import { Product, NavigationInfo } from "@common/types/product";
 import { Cart, LineItem } from "@common/types/cart";
+import { PageInfo } from "../schema";
 
 function normalizeProductImages({ edges }: { edges: ImageEdge[] }): any {
   {
@@ -145,7 +146,10 @@ const normalizeProductVariants = ({ edges }: ProductVariantConnection) => {
   });
 };
 
-export function normalizeProduct(productNode: ShopifyProduct): Product {
+export function normalizeProduct(
+  productNode: ShopifyProduct,
+  cursor?: string
+): Product {
   const {
     id,
     title: name,
@@ -161,6 +165,7 @@ export function normalizeProduct(productNode: ShopifyProduct): Product {
   const product = {
     id,
     name,
+    cursor: cursor ? cursor : null,
     vendor,
     description,
     path: `/${handle}`, //Das ist der Slug
@@ -177,4 +182,41 @@ export function normalizeProduct(productNode: ShopifyProduct): Product {
   };
 
   return product;
+}
+
+export function arraySelector(
+  array: Product[],
+  position: "first" | "last" | String
+): string {
+  if (position === "last") {
+    if (array.length > 0) {
+      return array[array.length - 1].cursor;
+    } else {
+      return array[0].cursor;
+    }
+  } else if (position === "first") {
+    return array[0].cursor;
+  } else {
+    throw new Error("Invalid position parameter.");
+  }
+}
+
+export type InputType = { products: Product[]; pageInfo: PageInfo };
+
+export function normalizePageInfo({
+  products,
+  pageInfo,
+}: InputType): NavigationInfo {
+  {
+    /*
+     * Die Funktion gibt Werte zurück, die für die Pagination Navigiation verwendet werden. z.B via useSWRInfinity
+     */
+  }
+  const navigationInfo = {
+    lastProductCursor: arraySelector(products, "last"),
+    firstProductCursor: arraySelector(products, "first"),
+    hasNextPage: pageInfo.hasNextPage,
+    hasPreviousPage: pageInfo.hasPreviousPage,
+  };
+  return navigationInfo;
 }

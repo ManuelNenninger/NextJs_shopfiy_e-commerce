@@ -13,7 +13,7 @@ const Navbar: FC = () => {
             <a className={s.logo}>NEXT_STORE</a>
           </Link>
           <nav className="ml-6 space-x-6">
-            <Link legacyBehavior href="/">
+            <Link legacyBehavior href="/all">
               <a className={s.link}>All</a>
             </Link>
             <Link legacyBehavior href="/">

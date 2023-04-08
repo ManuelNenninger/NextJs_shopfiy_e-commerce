@@ -21,10 +21,12 @@ const Button: FC<Props> = ({
   className,
   isLoading = false,
   Component = "button",
+  disabled = false,
   ...rest
 }) => {
   const rootClassName = cn(s.root, className, {
     [s.loading]: isLoading,
+    [s.disabled]: disabled,
   });
 
   return (
